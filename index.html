@@ -53,7 +53,7 @@
             Thank you for participating in this quick survey! We're exploring a new subscription-based protection plan called CreatorGuard, designed specifically for YouTube creators like you. For $29/month, it provides up to $500/month (max $1,500 per incident) in income replacement during verified channel suspensions or demonetization events (e.g., false copyright strikes or policy violations). This is not insurance—it's a simple service to help cover bills while you appeal. Your responses are anonymous and will take 5–10 minutes. As a thank you, you'll be entered into a draw for a $50 gift card.
         </p>
         
-        <form action="https://script.google.com/macros/s/AKfycbxSJDO6Y_x6sc9M3G9Wf9ie2Ow-xBEN3GZ25Da48aakGTcLD9Gx6vhwuYTwmPOnqbv3Yg/exec" method="POST" class="space-y-8">
+        <form action="https://script.google.com/macros/s/AKfycbzGC5gZ2dCbvCxHoLpCS-90l4D7U75folcK-8bHiFItDHNqfhQjJwbqXR-meUZXaMDNkw/exec" method="POST" class="space-y-8">
             <!-- Section 1: About You -->
             <div class="border-b pb-6">
                 <h2 class="text-2xl font-semibold mb-4">Section 1: About You</h2>
@@ -317,16 +317,8 @@
     </div>
 
     <script>
-    // Existing conditional visibility code remains
-    document.querySelector('select[name="q5"]').addEventListener('change', function() {
-        document.getElementById('q5-followup').classList.toggle('hidden', this.value === 'No' || this.value === '');
-    });
+    // Existing conditional visibility code...
     
-    document.querySelector('select[name="q13"]').addEventListener('change', function() {
-        document.getElementById('q13-followup').classList.toggle('hidden', this.value !== 'Maybe' && this.value !== 'No');
-    });
-
-    // Submit handler for JSON
     document.querySelector('form').addEventListener('submit', function(e) {
         e.preventDefault();
         var formData = new FormData(this);
@@ -339,18 +331,19 @@
                 data[key] = value;
             }
         });
-        fetch('https://script.google.com/macros/s/AKfycbxSJDO6Y_x6sc9M3G9Wf9ie2Ow-xBEN3GZ25Da48aakGTcLD9Gx6vhwuYTwmPOnqbv3Yg/exec', {  // Replace with the URL from Step 2.5
+        fetch('https://script.google.com/macros/s/AKfycbzGC5gZ2dCbvCxHoLpCS-90l4D7U75folcK-8bHiFItDHNqfhQjJwbqXR-meUZXaMDNkw/exec', {  // Paste the new URL
             method: 'POST',
+            mode: 'cors',  // Explicitly enable CORS
             body: JSON.stringify(data),
             headers: {'Content-Type': 'application/json'}
         }).then(response => {
             if (response.ok) {
                 alert('Submitted! Thanks!');
-                // Optional: Redirect to a thank-you page or clear form
             } else {
                 alert('Error submitting. Please try again.');
             }
         }).catch(error => {
+            console.error(error);  // Log full error to console
             alert('Error: ' + error.message);
         });
     });
