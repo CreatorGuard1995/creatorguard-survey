@@ -53,7 +53,8 @@
             Thank you for participating in this quick survey! We're exploring a new subscription-based protection plan called CreatorGuard, designed specifically for YouTube creators like you. For $29/month, it provides up to $500/month (max $1,500 per incident) in income replacement during verified channel suspensions or demonetization events (e.g., false copyright strikes or policy violations). This is not insurance—it's a simple service to help cover bills while you appeal. Your responses are anonymous and will take 5–10 minutes. As a thank you, you'll be entered into a draw for a $50 gift card.
         </p>
         
-        <form action="https://script.google.com/macros/s/AKfycbxWr1sv4Pj6V2wbkX_7H5ZcR2F3lsxd_0LVieIB8YymNkTU6kzs17VBTvWs6UvNINy82Q/exec" method="POST" class="space-y-8">
+        <form id="surveyForm">
+            <!--form action="https://script.google.com/macros/s/AKfycbxWr1sv4Pj6V2wbkX_7H5ZcR2F3lsxd_0LVieIB8YymNkTU6kzs17VBTvWs6UvNINy82Q/exec" method="POST" class="space-y-8">
             <!-- Section 1: About You -->
             <div class="border-b pb-6">
                 <h2 class="text-2xl font-semibold mb-4">Section 1: About You</h2>
@@ -348,7 +349,48 @@
         });
     });
     </script>
-    
+
+<!-- new script to handle the submit and send JSON to your Google Script -->
+<script>
+  const form = document.getElementById('surveyForm');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const jsonData = {};
+
+    formData.forEach((value, key) => {
+      if (jsonData[key]) {
+        // Convert to array if key is repeated (e.g., multiple checkboxes)
+        jsonData[key] = [].concat(jsonData[key], value);
+      } else {
+        jsonData[key] = value;
+      }
+    });
+
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxWr1sv4Pj6V2wbkX_7H5ZcR2F3lsxd_0LVieIB8YymNkTU6kzs17VBTvWs6UvNINy82Q/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),
+      });
+
+      const result = await response.json();
+      if (result.result === 'success') {
+        // Optional: redirect or show message
+        window.location.href = "thankyou.html"; // Or show a message inline
+      } else {
+        alert('Error: ' + result.message);
+      }
+    } catch (error) {
+      console.error('Submission failed', error);
+      alert('Something went wrong submitting the form.');
+    }
+  });
+</script>
     
 </body>
 </html>
